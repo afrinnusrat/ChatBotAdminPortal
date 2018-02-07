@@ -1,0 +1,280 @@
+<ng-container>
+
+  <mat-toolbar class="example-header">CDK Ask Admin Portal</mat-toolbar>
+
+  <mat-sidenav-container class="example-container">
+
+      <mat-sidenav #sidenav mode="side" opened="true" class="example-sidenav">
+
+          <button type="submit" mat-raised-button (click)="toggleF()" class="answer-button">Feed the Bot(FAQs)</button>
+          <button type="submit" mat-raised-button (click)="toggleA()" class="answer-button">Answer the Unanswered</button>
+          <button type="submit" mat-raised-button *ngIf="isOTHER" (click)="showOTHERS()" class="submenu-button">Others<span style="color:red">({{questionsLength}})</span></button>
+          <button type="submit" mat-raised-button *ngIf="isHR" (click)="showHR()" class="submenu-button">HR<span style="color:red">({{hrQuestionsLength}})</span></button>
+          <button type="submit" mat-raised-button *ngIf="isFI" (click)="showFI()" class="submenu-button">Finance<span style="color:red">({{financeQuestionsLength}})</span></button>
+          <button type="submit" mat-raised-button *ngIf="isLD" (click)="showLD()" class="submenu-button">L&D<span style="color:red">({{ldQuestionsLength}})</span></button>
+          <button type="submit" mat-raised-button *ngIf="isIT" (click)="showIT()" class="submenu-button">IT<span style="color:red">({{itQuestionsLength}})</span></button>
+          <button type="submit" mat-raised-button *ngIf="isFA" (click)="showFA()" class="submenu-button">Facilities<span style="color:red">({{faQuestionsLength}})</span></button>
+
+          <!--<ul id="docs-menu-Demos" class="menu-toggle-list" aria-hidden="false" ng-style="{ visibility: renderContent ? 'visible' : 'hidden' }" style="height: 1480px; visibility: visible;">
+              <li>
+                  <a href="">Autocomplete</a>
+              </li>
+          </ul>-->
+
+
+
+
+          <!--<button mat-raised-button class="answer-button" (click)="toggleA()" [matMenuTriggerFor]="menu">Answer the Unanswered</button>
+          <mat-menu #menu="matMenu">
+              <button type="submit" mat-menu-item (click)="showHR()">HR</button>
+              <button type="submit" mat-menu-item (click)="showFI()">Finance</button>
+              <button type="submit" mat-menu-item (click)="showFI()">L&D</button>
+              <button type="submit" mat-menu-item (click)="showFI()">IT</button>
+              <button type="submit" mat-menu-item (click)="showFI()">Facilities</button>
+          </mat-menu>-->
+
+
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+          <!--Welcome: default page-->
+          <mat-card *ngIf="isWelcome" class="welcome-card">
+              <mat-card-content class="welcome-content">
+                  <h1>Welcome to CDK Ask?</h1>
+              </mat-card-content>
+          </mat-card>
+          <!--End of Welcome-->
+          <!--Feed the Bot-->
+          <mat-card *ngIf="isFeed" class="cat-card">
+              <mat-tab-group>
+                  <mat-tab label="FAQs">
+                      <mat-card-content style="padding-top: 54px;margin-top: 30px;margin-left: 58px; width: 100%">
+                          <form #myForm="ngForm">
+                              <mat-form-field style="width: 70%;">
+                                  <mat-select placeholder="Select Your Department" [(ngModel)]="questionAndAnswer.category" name="category" style="width: 100%;padding-bottom:10px">
+                                      <mat-option style="width: 82%" *ngFor="let category of questions.catagories" [value]="category.viewValue">
+                                          {{ category.viewValue }}
+                                      </mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                              <mat-form-field style="width: 70%;">
+                                  <input [(ngModel)]="questionAndAnswer.question" [disabled]="questionAndAnswer.category==null" matInput placeholder="Question" name="question" required #inputElement1>
+                              </mat-form-field>
+                              <br>
+                              <mat-form-field style="width: 70%;">
+                                  <textarea [(ngModel)]="questionAndAnswer.answer" [disabled]="questionAndAnswer.category==null" matInput placeholder="Answer" name="answer" required #inputElement2></textarea>
+                              </mat-form-field>
+                              <br>
+                              <div style="text-align: left; padding-top: 2%;padding-left: 50%;">
+                                  <button type="submit" color="primary" mat-raised-button (click)="feed()" [disabled]="inputElement1.value.length && inputElement2.value.length == 0">Feed</button>
+                                  <button type="reset" color="primary" mat-raised-button>Cancel</button>
+                              </div>
+                          </form>
+                      </mat-card-content>
+                  </mat-tab>
+
+              </mat-tab-group>
+          </mat-card>
+          <!--Feed the Bot-->
+
+          <!--Answer-->
+
+          <mat-card *ngIf="isAa" class="welcome-card">
+              <mat-card-content style="margin-top: 131px;text-align: center;color:white">
+                  <h1>Please go to your respective sections on the left hand side menu and answer the unanswered!!</h1>
+
+              </mat-card-content>
+          </mat-card>
+          <!--End of Answer-->
+          <!--Page for HR Button-->
+          <mat-card *ngIf="showHr" class="cat-card">
+              <mat-card-content>
+                  <mat-tab-group>
+                      <mat-tab label="HR Questions">
+                          <div *ngFor="let hr of hrQuestions">
+                              <mat-accordion>
+                                  <mat-expansion-panel>
+                                      <mat-expansion-panel-header>
+                                          <mat-panel-title>
+                                              {{hr}}
+                                          </mat-panel-title>
+                                          <mat-panel-description>
+                                              Type your answer
+                                          </mat-panel-description>
+                                      </mat-expansion-panel-header>
+                                      <mat-form-field style="width: 50%">
+                                          <input matInput placeholder="Answer">
+                                      </mat-form-field>
+                                      <button type="submit" color="primary" mat-raised-button>Feed</button>
+                                  </mat-expansion-panel>
+                              </mat-accordion>
+                          </div>
+                      </mat-tab>
+                  </mat-tab-group>
+
+              </mat-card-content>
+          </mat-card>
+          <!-- End of Page for HR Button-->
+
+          <!--Finance Data-->
+          <mat-card *ngIf="showFi" class="cat-card">
+              <mat-card-content>
+                  <mat-tab-group>
+                      <mat-tab label="Finance Questions">
+                          <div *ngFor="let fi of financeQuestions">
+                              <mat-accordion>
+                                  <mat-expansion-panel>
+                                      <mat-expansion-panel-header>
+                                          <mat-panel-title>
+                                              {{fi}}
+                                          </mat-panel-title>
+                                          <mat-panel-description>
+                                              Type your answer
+                                          </mat-panel-description>
+                                      </mat-expansion-panel-header>
+                                      <mat-form-field style="width: 50%">
+                                          <input matInput placeholder="Answer">
+                                      </mat-form-field>
+                                      <button type="submit" color="primary" mat-raised-button>Feed</button>
+                                  </mat-expansion-panel>
+                              </mat-accordion>
+                          </div>
+                      </mat-tab>
+                  </mat-tab-group>
+
+              </mat-card-content>
+          </mat-card>
+          <!-- End of Finance Data-->
+          <!--Page for L&D Button-->
+          <mat-card *ngIf="showLd" class="cat-card">
+              <mat-card-content>
+                  <mat-tab-group>
+                      <mat-tab label="L&D Questions">
+                          <div *ngFor="let ld of ldQuestions">
+                              <mat-accordion>
+                                  <mat-expansion-panel>
+                                      <mat-expansion-panel-header>
+                                          <mat-panel-title>
+                                              {{ld}}
+                                          </mat-panel-title>
+                                          <mat-panel-description>
+                                              Type your answer
+                                          </mat-panel-description>
+                                      </mat-expansion-panel-header>
+                                      <mat-form-field style="width: 50%">
+                                          <input matInput placeholder="Answer">
+                                      </mat-form-field>
+                                      <button type="submit" color="primary" mat-raised-button>Feed</button>
+                                  </mat-expansion-panel>
+                              </mat-accordion>
+                          </div>
+                      </mat-tab>
+                  </mat-tab-group>
+
+              </mat-card-content>
+          </mat-card>
+          <!-- End of Page for L&D Button-->
+          <!--card for it button-->
+          <mat-card *ngIf="showIt" class="cat-card">
+              <mat-card-content>
+                  <mat-tab-group>
+                      <mat-tab label="IT Questions">
+                          <div *ngFor="let it of itQuestions">
+                              <mat-accordion>
+                                  <mat-expansion-panel>
+                                      <mat-expansion-panel-header>
+                                          <mat-panel-title>
+                                              {{it}}
+                                          </mat-panel-title>
+                                          <mat-panel-description>
+                                              Type your answer
+                                          </mat-panel-description>
+                                      </mat-expansion-panel-header>
+                                      <mat-form-field style="width: 50%">
+                                          <input matInput placeholder="Answer">
+                                      </mat-form-field>
+                                      <button type="submit" color="primary" mat-raised-button>Feed</button>
+                                  </mat-expansion-panel>
+                              </mat-accordion>
+                          </div>
+                      </mat-tab>
+                  </mat-tab-group>
+
+              </mat-card-content>
+          </mat-card>
+          <!-- enf of card for it button-->
+          <!--card for Facilities button-->
+          <mat-card *ngIf="showFa" class="cat-card">
+              <mat-card-content>
+                  <mat-tab-group>
+                      <mat-tab label="Facility Questions">
+                          <div *ngFor="let fa of faQuestions">
+                              <mat-accordion>
+                                  <mat-expansion-panel>
+                                      <mat-expansion-panel-header>
+                                          <mat-panel-title>
+                                              {{fa}}
+                                          </mat-panel-title>
+                                          <mat-panel-description>
+                                              Type your answer
+                                          </mat-panel-description>
+                                      </mat-expansion-panel-header>
+                                      <mat-form-field style="width: 50%">
+                                          <input matInput placeholder="Answer">
+                                      </mat-form-field>
+                                      <button type="submit" color="primary" mat-raised-button>Feed</button>
+                                  </mat-expansion-panel>
+                              </mat-accordion>
+                          </div>
+                      </mat-tab>
+                  </mat-tab-group>
+
+              </mat-card-content>
+          </mat-card>
+          <!--End of Facilities button-->
+          <!--card for Other button-->
+          <mat-card *ngIf="showOther" class="cat-card">
+              <mat-toolbar style=" height:50px">
+                  <mat-select placeholder="Categorize" [(ngModel)]="questionsObject.id" style="width: 15%; color:white">
+                      <mat-option style="width: 82%" *ngFor="let catagory of questions.catagories" [value]="catagory.value">
+                          {{ catagory.viewValue }}
+                      </mat-option>
+                  </mat-select>
+                  <div style="padding-left:69%">
+                      <button type="submit" color="primary" mat-raised-button [disabled]="questionsObject.id==null || questionsObject.isSelected==false" (click)="tagThemAll(questionsObject)">Tag Selected</button>
+                  </div>
+              </mat-toolbar>
+              <!--<mat-card-content style="padding-left:10%; overflow: scroll">-->
+              <mat-card-content class="content">
+
+                  <!--<mat-tab-group>-->
+                  <!--<mat-tab label="Other Questions">-->
+                  <div *ngFor="let question of questions.allQuestions">
+                      <mat-checkbox style="margin-left: 18px;" [(ngModel)]="question.selected" (change)="onChange(question)" [disabled]="questionsObject.id==null" type="checkbox"> {{question.viewValue}}<br> </mat-checkbox>
+
+                      <!--Commented working code-->
+                      <!--<mat-checkbox [disabled]="questionsObject.id==null" style="margin-left: 18px;">
+                          <mat-form-field style="padding-left:10px; width:200%">
+
+                              <input name="questions" value="{{question.viewValue}}" matInput readonly>-->
+                      <!--<button type="submit" color="primary" mat-raised-button (click)="tagThemAll(question.viewValue)">Tag Selected</button>-->
+
+
+                      <!--</mat-form-field>
+                      </mat-checkbox>-->
+
+                  </div>
+                  <!--</mat-tab>-->
+                  <!--</mat-tab-group>-->
+
+              </mat-card-content>
+          </mat-card>
+          <!--End of Other button-->
+
+
+      </mat-sidenav-content>
+
+  </mat-sidenav-container>
+  <mat-toolbar class="example-footer">Copyright © 2018 CDK Global (UK) Limited</mat-toolbar>
+
+</ng-container>

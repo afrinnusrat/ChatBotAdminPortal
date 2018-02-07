@@ -1,0 +1,85 @@
+.example-container {
+    position: absolute;
+    top: 60px;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+}
+
+.example-sidenav {
+    align-items: center;
+    justify-content: top;
+    width: 20%;
+    background: rgba(0, 0, 0, .32);
+    bottom: 0px;
+}
+
+.example-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #3f51b5;
+    color: white;
+}
+
+.example-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #3f51b5;
+    color: white;
+    font-size: 11px;
+    font-family: Tahoma, "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.welcome-card {
+    margin: 5%;
+    padding: 0px;
+    height: 396px;
+    width: 66%;
+    position: fixed;
+    background: linear-gradient(to right, #4b6cb7, #182848);
+}
+
+.cat-card {
+    margin: 5%;
+    padding: 0px;
+    height: 396px;
+    width: 66%;
+    position: fixed
+}
+
+.content {
+    position: absolute;
+    top: 50px;
+    left: 15px;
+    right: 0px;
+    bottom: 0px;
+    overflow-y: scroll;
+}
+
+.welcome-content {
+    padding-top: 15%;
+    padding-left: 30%;
+    width: 100%;
+    color: white
+}
+
+.answer-button {
+    width: 100%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: primary;
+    text-align: left
+}
+
+.submenu-button {
+    width: 100%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, .32);
+    background: white;
+    text-align: left;
+}
